@@ -43,21 +43,16 @@
 				onSubmit: function(data) {
 					console.log(data);
 				},
-				form: [
-					{
-						key  : null,
-						label: 'Name',
-						text : 'Text'
-					},
+				fields: [
 					{
 						key  : 'name',
 						label: 'Name',
-						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/bomb.png',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/bin.png',
 						input: {
 							type       : 'text',
 							isRequired : true,
 							maxlength  : 64,
-							placeholder: 'Tarawo'
+							placeholder: 'Makoto'
 						}
 					},
 					{
@@ -67,19 +62,6 @@
 						input: {
 							type      : 'date',
 							isRequired: true,
-							maxlength : 2,
-							width     : '25px'
-						}
-					},
-					{
-						key  : 'age',
-						label: 'Age',
-						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/dummy.png',
-						input: {
-							type      : 'text',
-							isRequired: true,
-							isNumber  : true,
-							validator : 'numbers',
 							maxlength : 2,
 							width     : '25px'
 						}
@@ -108,9 +90,10 @@
 					{
 						key  : 'job',
 						label: 'Job',
-						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/chair.png',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/tie.png',
 						input: {
 							type      : 'pulldown',
+							isRequired: true,
 							items: [
 								{
 									label: 'Artist',
@@ -121,8 +104,13 @@
 									value: 'blogger'
 								},
 								{
-									label: 'Not in Employment, Education or Training',
-									value: 'neet'
+									label: 'Politician',
+									value: 'politician'
+								},
+								{
+									label: 'President',
+									value: 'president',
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/bank.png'
 								}
 							]
 						}
@@ -182,7 +170,7 @@
 									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/moneys.png'
 								},
 								{
-									label: 'Pro ($207)',
+									label: 'Pro ($2500)',
 									value: 'pro',
 									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/cigarette.png'
 								}
@@ -193,15 +181,82 @@
 						key  : 'paymentMethod',
 						label: 'Payment Method',
 						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/moneys.png',
-						text : 'hello',
-						depend: {
-							key: {
-								plan: {
-									value   : 'free',
-									operator: '!=='
+						input: {
+							type: 'radio',
+							isRequired: true,
+							items: [
+								{
+									label: 'Credit Card',
+									value: 'credit',
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/credit-card.png',
+									isSelected: true
+								},
+								{
+									label: 'Paypal',
+									value: 'paypal',
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/piggy-bank.png'
+								},
+								{
+									label: 'Coupon',
+									value: 'coupon',
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/ticket.png'
 								}
+							]
+						},
+						depends: [
+							{
+								key     : 'plan',
+								operator: '!==',
+								value   : 'free'
+							},
+							{
+								key     : 'plan',
+								operator: '!==',
+								value   : ''
 							}
-						}
+						]
+					},
+					{
+						key  : 'creditCard',
+						label: 'Card Number',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/credit-card.png',
+						input: {
+							type: 'text',
+							isRequired: true,
+							isNumber  : true,
+							validator : 'numbers',
+							minlength : 16,
+							maxlength : 16,
+							width     : '160px'
+						},
+						depends: [
+							{
+								key  : 'paymentMethod',
+								value: 'credit'
+							}
+						]
+					},
+					{
+						key  : 'couponCode',
+						label: 'Coupon Code',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/ticket.png',
+						text : '8 characters.',
+						input: {
+							type: 'text',
+							isRequired: true,
+							isNumber  : true,
+							validator : 'numbers',
+							minlength : 8,
+							maxlength : 8,
+							width     : '100px',
+							prependText: '#'
+						},
+						depends: [
+							{
+								key  : 'paymentMethod',
+								value: 'coupon'
+							}
+						]
 					},
 					{
 						key  : 'options',

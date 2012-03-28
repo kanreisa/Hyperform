@@ -34,11 +34,11 @@
 		background-image: -o-linear-gradient(top, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.05));
 		background-image: linear-gradient(top, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.05));
 		
-		-webkit-transition: all 0.25s ease;
-		-moz-transition   : all 0.25s ease;
-		-ms-transition    : all 0.25s ease;
-		-o-transition     : all 0.25s ease;
-		transition        : all 0.25s ease; }
+		-webkit-transition: border-color 0.25s ease;
+		-moz-transition   : border-color 0.25s ease;
+		-ms-transition    : border-color 0.25s ease;
+		-o-transition     : border-color 0.25s ease;
+		transition        : border-color 0.25s ease; }
 		
 		.hyperform button > label {
 			display    : inline-block;
@@ -58,17 +58,18 @@
 	.hyperform button:first-child {
 		margin-left: 0; }
 	
-	.hyperform button:hover {
+	.hyperform button:hover,
+	.hyperform button.selecting {
 		border-color    : #777 !important;
 		border-color    : rgba(0, 0, 0, 0.5) !important;
-		color           : #000;
 		background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.15));
 		background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.15));
 		background-image: -ms-linear-gradient(top, rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.15));
 		background-image: -o-linear-gradient(top, rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.15));
 		background-image: linear-gradient(top, rgba(0, 0, 0, 0.10), rgba(0, 0, 0, 0.15)); }
 		
-		.hyperform button:hover > label {
+		.hyperform button:hover > label,
+		.hyperform button.selecting > label {
 			color: #000; }
 	
 	.hyperform button:active {
@@ -81,6 +82,7 @@
 	
 	.hyperform button.selected {
 		border-color    : #000 !important;
+		border-color    : rgba(0, 0, 0, 0.8) !important;
 		box-shadow      : 0 0 5px #cce1ff,
 		                  inset 0 0 3px #1e7aff;
 		background-color: #cce1ff !important;
@@ -190,11 +192,11 @@
 					border    : 1px solid #9e9fc1;
 					box-shadow: 0 0 5px #ccc; }
 				
-				table.hyperform > tbody > tr > td > div.input > input.valid {
+				table.hyperform > tbody > tr.valid > td > div.input > input {
 					background-color: #ebffe5;
 					border-color    : #78a969; }
 				
-				table.hyperform > tbody > tr > td > div.input > input.invalid {
+				table.hyperform > tbody > tr.invalid > td > div.input > input {
 					background-color: #ffe5e7;
 					border-color    : #ad6f72; }
 				
@@ -227,7 +229,7 @@
 				line-height: 28px;
 				border       : 1px solid #b6b7d1;
 				border-radius: 3px; }
-			
+				
 			/*- textarea -*/
 			
 			table.hyperform > tbody > tr > td > textarea {
@@ -249,11 +251,11 @@
 				border    : 1px solid #9e9fc1;
 				box-shadow: 0 0 5px #ccc; }
 			
-			table.hyperform > tbody > tr > td > textarea.valid {
+			table.hyperform > tbody > tr.valid  > td > textarea{
 				background-color: #ebffe5;
 				border-color    : #78a969; }
 			
-			table.hyperform > tbody > tr > td > textarea.invalid  {
+			table.hyperform > tbody > tr.invalid > td > textarea {
 				background-color: #ffe5e7;
 				border-color    : #ad6f72; }
 			
@@ -278,22 +280,75 @@
 					border-top-right-radius   : 3px;
 					border-bottom-right-radius: 3px; }
 					
-				table.hyperform > tbody > tr > td > div.radio.invalid > button,
-				table.hyperform > tbody > tr > td > div.checkbox.invalid > button  {
+				table.hyperform > tbody > tr.invalid > td > div.radio > button,
+				table.hyperform > tbody > tr.invalid > td > div.checkbox > button {
 					background-color: #ffe5e7;
 					border-color    : #ad6f72; }
 				
 				table.hyperform > tbody > tr > td > div.radio > button:hover {
-					border-color    : #777;
-					border-color    : rgba(0, 0, 0, 0.5); }
+					border-color: #777;
+					border-color: rgba(0, 0, 0, 0.5); }
 				
-				table.hyperform > tbody > tr > td > div.radio > button:hover + button {
-					border-left-color: #777;
-					border-left-color: rgba(0, 0, 0, 0.5); }
+				table.hyperform > tbody > tr > td > div.radio > button:hover + button:not(.selected) {
+					border-left-color: #777; }
+				
+				table.hyperform > tbody > tr > td > div.radio > button.active,
+				table.hyperform > tbody > tr > td > div.radio > button.selected {
+					border-right: 1px solid; }
 				
 				table.hyperform > tbody > tr > td > div.radio > button.active + button,
 				table.hyperform > tbody > tr > td > div.radio > button.selected + button {
-					border-left-color: #000; }
+					border-left: none; }
+			
+			/*- pulldown -*/
+			
+			table.hyperform > tbody > tr > td > div.pulldown {
+				margin: 0; }
+			
+				table.hyperform > tbody > tr > td > div.pulldown > div.pulldown-list {
+					position: absolute;
+					padding : 5px 0;
+					margin-top: 2px;
+					border  : 1px solid #999;
+					box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+					width     : auto;
+					height    : auto;
+					max-height: 150px;
+					overflow  : auto;
+					overflow-x: hidden;
+					overflow-y: auto;
+					line-height: 18px;
+					border-radius: 3px;
+					background-color: #fff;
+					background-color: rgba(255, 255, 255, 0.9); }
+				
+				table.hyperform > tbody > tr > td > div.pulldown > button > label:after {
+					content: "\25bc";
+					color  : #999;
+					font-size: 10px;
+					margin : 0 0 0 7px; }
+					
+				table.hyperform > tbody > tr.invalid > td > div.pulldown > button {
+					background-color: #ffe5e7;
+					border-color    : #ad6f72; }
+				
+				table.hyperform > tbody > tr > td > div.pulldown > button:hover > label:after,
+				table.hyperform > tbody > tr > td > div.pulldown > button.selecting > label:after {
+					color  : #000; }
+					
+					table.hyperform > tbody > tr > td > div.pulldown > div.pulldown-list > div {
+						padding: 2px 25px 1px 10px;
+						cursor : pointer;
+						color: #555; }
+					
+					table.hyperform > tbody > tr > td > div.pulldown > div.pulldown-list > div.hyperform-icon {
+						padding-left: 30px;
+						background-repeat  : no-repeat;
+						background-position: 10px center;}
+					
+					table.hyperform > tbody > tr > td > div.pulldown > div.pulldown-list > div:hover {
+						color: #00327a;
+						background-color: #cce1ff; }
 			
 			/*- warn -*/
 			
