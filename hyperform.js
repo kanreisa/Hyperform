@@ -441,11 +441,11 @@ var Hyperform = Class.create({
 							});
 						}
 						
-						if (typeof a.selected === 'undefined') {
+						if (typeof a.isSelected === 'undefined') {
 							return;//continue
 						}
 						
-						if (a.selected !== true) {
+						if (a.isSelected !== true) {
 							return;//continue
 						}
 						
