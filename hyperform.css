@@ -352,6 +352,22 @@
 						color: #00327a;
 						background-color: #cce1ff; }
 			
+			/*- slider -*/
+			
+			table.hyperform > tbody > tr > td > div.slider {
+				margin: 0; }
+			
+				table.hyperform > tbody > tr > td > div.slider > div.slider-base {
+					position     : relative;
+					height       : 5px;
+					border       : 1px solid #bbb;
+					border-radius: 3px;
+					box-shadow   : inset 0 0 2px #ddd;
+					background-color: #fff; }
+			
+				table.hyperform > tbody > tr > td > div.slider > div.slider-base:hover {
+					border-color : #777; }
+			
 			/*- warn -*/
 			
 			table.hyperform > tbody > tr > td > ul.warn {

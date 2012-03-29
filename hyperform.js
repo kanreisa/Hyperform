@@ -165,7 +165,7 @@ var Hyperform = Class.create({
 					}
 					
 					if (typeof field.input.width !== 'undefined') {
-						field._f.setStyle({width: field.input.width});
+						field._f.setStyle({width: field.input.width + 'px'});
 					} else {
 						field._f.setStyle({width: '200px'});
 					}
@@ -197,7 +197,7 @@ var Hyperform = Class.create({
 						}
 						
 						if (typeof field.input.width !== 'undefined') {
-							field._fc.setStyle({width: field.input.width});
+							field._fc.setStyle({width: field.input.width + 'px'});
 						} else {
 							field._fc.setStyle({width: '200px'});
 						}
@@ -241,7 +241,7 @@ var Hyperform = Class.create({
 					}
 					
 					if (typeof field.input.width !== 'undefined') {
-						field._f.setStyle({width: field.input.width});
+						field._f.setStyle({width: field.input.width + 'px'});
 					} else {
 						field._f.setStyle({width: '300px'});
 					}
@@ -370,8 +370,8 @@ var Hyperform = Class.create({
 					});//<--#each
 				}//<--if
 				
-				//pulldown
-				if (field.input.type == 'pulldown') {
+				// pulldown
+				if (field.input.type === 'pulldown') {
 					// create *hidden* input element
 					field._f = new Element('input', {type : 'hidden'});
 					
@@ -450,6 +450,34 @@ var Hyperform = Class.create({
 						}
 						
 						selectItem(i);
+					});
+				}//<--if
+				
+				// slider
+				if (field.input.type === 'slider') {
+					// create *hidden* input element
+					field._f = new Element('input', {type : 'hidden'});
+					
+					if (typeof field.input.value !== 'undefined') {
+						field._f.writeAttribute('value', field.input.value);
+					}
+					
+					// create *interface* container
+					field._i = new Element('div', {className: 'slider'});
+					
+					// interface
+					var base = new Element('div', {className: 'slider-base'});
+					field._i.insert(base);
+					
+					base.setStyle({
+						width: (field.input.width || 300) + 'px'
+					});
+					
+					var fill = new Element('div', {className: 'slider-fill'});
+					base.insert(fill);
+					
+					fill.setStyle({
+						//
 					});
 				}//<--if
 			}//<--if
