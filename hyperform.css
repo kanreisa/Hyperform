@@ -10,7 +10,12 @@
 	background      : #fff;
 	border-collapse : collapse;
 	table-layout    : fixed;
-	line-height     : 18px; }
+	line-height     : 18px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none; }
 	
 	/*- button -*/
 	
@@ -111,7 +116,11 @@
 			font-size   : 12px; }
 		
 		table.hyperform > tbody > tr > th {
-			/* background  : #eee; */ }
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			-o-user-select: none;
+			user-select: none; }
 		
 			table.hyperform > tbody > tr > th > label {
 				font-size          : 13px;
@@ -355,18 +364,61 @@
 			/*- slider -*/
 			
 			table.hyperform > tbody > tr > td > div.slider {
-				margin: 0; }
-			
+				margin : 0;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				-o-user-select: none;
+				user-select: none; }
+				
 				table.hyperform > tbody > tr > td > div.slider > div.slider-base {
 					position     : relative;
-					height       : 5px;
+					margin-top   : 5px;
+					height       : 4px;
 					border       : 1px solid #bbb;
 					border-radius: 3px;
 					box-shadow   : inset 0 0 2px #ddd;
+					overflow     : visible;
 					background-color: #fff; }
-			
-				table.hyperform > tbody > tr > td > div.slider > div.slider-base:hover {
-					border-color : #777; }
+					
+					table.hyperform > tbody > tr > td > div.slider > div.slider-base >  div.slider-fill {
+						position     : relative;
+						height       : 4px;
+						border-radius: 3px;
+						box-shadow   : inset 0 0 3px #cce1ff;
+						background-color: #1e7aff; }
+						
+						table.hyperform > tbody > tr > td > div.slider > div.slider-base >  div.slider-fill > div.slider-handle {
+							position     : absolute;
+							z-index      : 2;
+							top          : -5px;
+							right        : -7px;
+							width        : 12px;
+							height       : 12px;
+							cursor       : default;
+							border       : 1px solid #777;
+							border-radius: 7px;
+							box-shadow   : inset 0 0 5px #ddd,
+							               0 0 5px rgba(0, 0, 0, 0.3);
+							background-color: #fff;
+							background-color: rgba(255, 255, 255, 0.6); }
+						
+						table.hyperform > tbody > tr > td > div.slider > div.slider-base >  div.slider-fill > div.slider-handle:hover {
+							box-shadow   : inset 0 0 3px #1e7aff,
+							               0 0 5px rgba(0, 0, 0, 0.3);
+							border-color : #555; }
+					
+					table.hyperform > tbody > tr > td > div.slider > div.slider-base >  div.slider-scale {
+						position     : absolute;
+						z-index      : 1;
+						top          : 0;
+						width        : 1px;
+						height       : 4px;
+						background-color: #ccc; }
+				
+				table.hyperform > tbody > tr > td > div.slider > div.slider-display {
+					margin-top: 5px;
+					color     : #00327a; }
 			
 			/*- warn -*/
 			

@@ -247,7 +247,7 @@ var Hyperform = Class.create({
 					}
 					
 					if (typeof field.input.height !== 'undefined') {
-						field._f.setStyle({height: field.input.height});
+						field._f.setStyle({height: field.input.height + 'px'});
 					} else {
 						field._f.setStyle({height: '50px'});
 					}
@@ -260,11 +260,11 @@ var Hyperform = Class.create({
 				
 				// radio
 				if (field.input.type === 'radio') {
-					// create *hidden* input element
-					field._f = new Element('input', {type: 'hidden'});
+					// create value object
+					field._o = null;
 					
 					if (typeof field.input.value !== 'undefined') {
-						field._f.writeAttribute('value', field.input.value);
+						field._o = field.input.value;
 					}
 					
 					// create *interface* container
@@ -289,7 +289,7 @@ var Hyperform = Class.create({
 						// observe onClick
 						button.observe('click', function _onClickRadioBtn() {
 							// write value
-							field._f.writeAttribute('value', a.value);
+							field._o = a.value;
 							
 							// rewrite selected className
 							field._i.select('button').each(function _eachRadioBtns(b) {
@@ -304,7 +304,7 @@ var Hyperform = Class.create({
 						// selected state
 						if ((typeof a.isSelected !== 'undefined') && (a.isSelected === true)) {
 							button.addClassName('selected');
-							field._f.writeAttribute('value', a.value);
+							field._o = a.value;
 						}
 						
 						// button style customization
@@ -316,8 +316,8 @@ var Hyperform = Class.create({
 				
 				// checkbox
 				if (field.input.type === 'checkbox') {
-					// create array
-					field._a = [];
+					// create object (array)
+					field._o = [];
 					
 					// create *interface* container
 					field._i = new Element('div', {className: 'checkbox'});
@@ -342,11 +342,11 @@ var Hyperform = Class.create({
 						button.observe('click', function _onClickChkboxBtn() {
 							if (this.hasClassName('selected') === true) {
 								// remove
-								field._a = field._a.without(a.value);
+								field._o = field._o.without(a.value);
 								this.removeClassName('selected');
 							} else {
 								// add
-								field._a.push(a.value);
+								field._o.push(a.value);
 								this.addClassName('selected');
 							}
 							
@@ -360,7 +360,7 @@ var Hyperform = Class.create({
 						// selected state
 						if ((typeof a.isSelected !== 'undefined') && (a.isSelected === true)) {
 							button.addClassName('selected');
-							field._a.push(a.value);
+							field._o.push(a.value);
 						}
 						
 						// button style customization
@@ -372,11 +372,11 @@ var Hyperform = Class.create({
 				
 				// pulldown
 				if (field.input.type === 'pulldown') {
-					// create *hidden* input element
-					field._f = new Element('input', {type : 'hidden'});
+					// create value object
+					field._o = null;
 					
 					if (typeof field.input.value !== 'undefined') {
-						field._f.writeAttribute('value', field.input.value);
+						field._o = field.input.value;
 					}
 					
 					// create *interface* container
@@ -399,11 +399,11 @@ var Hyperform = Class.create({
 					
 					field.input.items.unshift({
 						label: '<span style="color: #999;">&mdash;</span>',
-						value: ''
+						value: null
 					});
 					
 					var selectItem = function _selectItem(n) {
-						field._f.writeAttribute('value', field.input.items[n].value);
+						field._o = field.input.items[n].value;
 						
 						label.update(field.input.items[n].label);
 						
@@ -445,21 +445,19 @@ var Hyperform = Class.create({
 							return;//continue
 						}
 						
-						if (a.isSelected !== true) {
-							return;//continue
+						if (a.isSelected === true) {
+							selectItem(i);
 						}
-						
-						selectItem(i);
 					});
 				}//<--if
 				
 				// slider
 				if (field.input.type === 'slider') {
-					// create *hidden* input element
-					field._f = new Element('input', {type : 'hidden'});
+					// create value object
+					field._o = null;
 					
 					if (typeof field.input.value !== 'undefined') {
-						field._f.writeAttribute('value', field.input.value);
+						field._o = field.input.value;
 					}
 					
 					// create *interface* container
@@ -469,15 +467,121 @@ var Hyperform = Class.create({
 					var base = new Element('div', {className: 'slider-base'});
 					field._i.insert(base);
 					
-					base.setStyle({
-						width: (field.input.width || 300) + 'px'
-					});
-					
 					var fill = new Element('div', {className: 'slider-fill'});
 					base.insert(fill);
 					
-					fill.setStyle({
-						//
+					var handle = new Element('div', {className: 'slider-handle'});
+					fill.insert(handle);
+					
+					var display = new Element('div', {className: 'slider-display'});
+					field._i.insert(display);
+					
+					var isDragging   = false;
+					var lastPosition = 0;
+					var baseWidth    = field.input.width || 300;
+					var fillWidth    = 0;
+					var unitWidth    = baseWidth / (((field.input.items.length === 1) ? 2 : field.input.items.length) - 1);
+					
+					(field.input.items.length - 2).times(function(n) {
+						var pos = (n + 1) * unitWidth;
+						
+						base.insert(
+							new Element('div', {className: 'slider-scale'}).setStyle({
+								left: pos + 'px'
+							})
+						);
+					});
+					
+					base.setStyle({
+						width: baseWidth + 'px'
+					});
+					
+					if (field.input.items.length === 1) {
+						handle.hide();
+						display.update(field.input.items.first().label);
+					}
+					
+					var updateSlider = function _updateSlider(isSnap) {
+						fill.setStyle({
+							width: fillWidth + 'px'
+						});
+						
+						var isBefore = ((fillWidth % unitWidth) < (unitWidth / 2));
+						
+						field.input.items.each(function _eachItemsInput(a, i) {
+							var itemPos = i * unitWidth;
+							
+							if (fillWidth >= itemPos) {
+								return;//continue
+							}
+							
+							if (isBefore) {
+								var label = field.input.items[i - 1].label;
+								var value = field.input.items[i - 1].value;
+								itemPos -= unitWidth;
+							} else {
+								var label = a.label;
+								var value = a.value;
+							}
+							
+							field._o = value;
+							
+							display.update(label);
+							
+							if (isSnap) {
+								fillWidth = itemPos;
+								updateSlider();
+							}
+							
+							throw $break;
+						});
+					};
+					updateSlider();
+					
+					// each items
+					field.input.items.each(function _eachItemsInput(a, i) {
+						a._sliderPosition = i * unitWidth;
+					});
+					
+					// observe mousedown
+					handle.observe('mousedown', function(e) {
+						isDragging   = true;
+						lastPosition = e.pointerX();
+						
+						var onMove = function(e) {
+							if (isDragging === true) {
+								var delta = e.pointerX() - lastPosition;
+								fillWidth    = fillWidth + delta;
+								
+								if (fillWidth < 0) {
+									fillWidth = 0;
+								} else if (fillWidth > baseWidth) {
+									fillWidth = baseWidth;
+								} else {
+									lastPosition = e.pointerX();
+								}
+								
+								updateSlider();
+							}
+							
+							return false;
+						};
+						
+						var onUp = function(e) {
+							isDragging = false;
+							
+							$(document.body).stopObserving('mousemove', onMove);
+							$(document.body).stopObserving('mouseup', onUp);
+							
+							updateSlider(true);
+							
+							return false;
+						};
+						
+						$(document.body).observe('mousemove', onMove);
+						$(document.body).observe('mouseup', onUp);
+						
+						return false;
 					});
 				}//<--if
 			}//<--if
@@ -614,7 +718,14 @@ var Hyperform = Class.create({
 				}
 			}
 			
-			if (typeof field._a !== 'undefined') {
+			if (typeof field._o !== 'undefined') {
+				var isNull = (field._o === null);
+				if (isNull) {
+					if (field._d.isRequired === true) {
+						field._valid = false;
+					}
+				}
+				
 				
 			}
 		}.bind(this));
@@ -633,7 +744,7 @@ var Hyperform = Class.create({
 		}.bind(this));
 		
 		return isValid;
-	}
+	}//<--validate
 	,
 	/**
 	 *  Hyperform#submit() -> Hyperform
@@ -659,7 +770,7 @@ var Hyperform = Class.create({
 		}
 		
 		return this;
-	}
+	}//<--submit
 	,
 	/**
 	 *  Hyperform#result() -> Object
@@ -670,21 +781,27 @@ var Hyperform = Class.create({
 		var result = {};
 		
 		this.fields.each(function(field) {
-			if (field.key === null) return;//continue
+			if ((typeof field.key === 'undefined') || (field.key === null)) {
+				return;//continue
+			}
+			
+			if (field._tr.visible() === false) {
+				return;//continue
+			}
 			
 			result[field.key] = this.getValue(field);
 		}.bind(this));
 		
 		return result;
-	}
+	}//<--result
 	,
 	/**
-	 *  Hyperform#getValue(fieldObject) -> null, Number, String, Array
+	 *  Hyperform#getValue(fieldObject) -> null, Number, String, Array, Date
 	 *
 	 *  Get the value of the item.
 	**/
 	getValue: function _getValue(field) {
-		if ((typeof field._f === 'undefined') && (typeof field._a === 'undefined')) {
+		if ((typeof field._f === 'undefined') && (typeof field._o === 'undefined')) {
 			return null;
 		}
 		
@@ -696,32 +813,61 @@ var Hyperform = Class.create({
 			return null;
 		}
 		
-		var isNumber = ((typeof field._d.isNumber !== 'undefined') && (field._d.isNumber === true));
+		var toNumber = ((typeof field._d.toNumber !== 'undefined') && (field._d.toNumber === true));
 		
-		var result = null;
+		var isNull = ((typeof field._o !== 'undefined') && (field._o === null));
+		if (isNull) {
+			if (toNumber) {
+				return 0;
+			} else {
+				return null;
+			}
+		}
 		
-		if (Object.isArray(field._a) === true) {
-			if (isNumber) {
-				result = [];
+		var isString = ((typeof field._o !== 'undefined') && (Object.isString(field._o) === true));
+		if (isString) {
+			if (toNumber) {
+				return parseInt(field._o, 10);
+			} else {
+				return field._o;
+			}
+		}
+		
+		var isArray = ((typeof field._o !== 'undefined') && (Object.isArray(field._o) === true));
+		if (isArray) {
+			if (toNumber) {
+				var result = [];
 				
-				for (var i = 0; i < field._a.length; i++) {
-					result.push(parseInt(field._a[i], 10));
+				for (var i = 0; i < field._o.length; i++) {
+					result.push(parseInt(field._o[i], 10));
 				}
+				
+				return result;
 			} else {
-				result = field._a;
+				return field._o;
 			}
 		}
 		
-		if (Object.isElement(field._f) === true) {
-			if (isNumber) {
-				result = parseInt($F(field._f), 10);
+		var isDate = ((typeof field._o !== 'undefined') && (Object.isDate(field._o) === true));
+		if (isDate) {
+			if (toNumber) {
+				return new Date(field._o).getTime();
 			} else {
-				result = $F(field._f);
+				return field._o;
 			}
 		}
 		
-		return result;
-	}
+		var isElement = ((typeof field._f !== 'undefined') && (Object.isElement(field._f) === true));
+		if (isElement) {
+			if (toNumber) {
+				return parseInt($F(field._f), 10);
+			} else {
+				return $F(field._f);
+			}
+		}
+		
+		return null;
+	}//<--getValue
 	,
 	/**
 	 *  Hyperform#disable() -> Hyperform
@@ -738,7 +884,7 @@ var Hyperform = Class.create({
 		this._table._submit.hide();
 		
 		return this;
-	}
+	}//<--disable
 	,
 	/**
 	 *  Hyperform#enable() -> Hyperform
@@ -755,7 +901,7 @@ var Hyperform = Class.create({
 		this._table._submit.show();
 		
 		return this;
-	}
+	}//<--enable
 	,
 	/**
 	 *  Hyperform#reliance(fieldObject) -> Boolean
@@ -831,12 +977,12 @@ var Hyperform = Class.create({
 					this.applyStyle();
 				}
 				
-				setTimeout(arguments.callee.bind(this), 50);
+				setTimeout(arguments.callee.bind(this), 10);
 			}.bind(this)
 		)();
 		
 		return true;
-	}
+	}//<--reliance
 	,
 	/**
 	 *  Hyperform#applyStyle() -> Hyperform
@@ -867,5 +1013,5 @@ var Hyperform = Class.create({
 		});
 		
 		return this;
-	}
+	}//<--applyStyle
 });

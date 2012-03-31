@@ -35,7 +35,7 @@
 		// sample script
 		//
 		function exampleBasic() {
-			var form = new Hyperform({
+			var form = window.formExampleBasic = new Hyperform({
 				//formWidth: '400px',
 				labelWidth: '130px',
 				labelAlign: 'right',
@@ -211,7 +211,7 @@
 							{
 								key     : 'plan',
 								operator: '!==',
-								value   : ''
+								value   : null
 							}
 						]
 					},
@@ -222,7 +222,7 @@
 						input: {
 							type: 'text',
 							isRequired: true,
-							isNumber  : true,
+							toNumber  : true,
 							validator : 'numbers',
 							minlength : 16,
 							maxlength : 16,
@@ -243,7 +243,7 @@
 						input: {
 							type: 'text',
 							isRequired: true,
-							isNumber  : true,
+							toNumber  : true,
 							validator : 'numbers',
 							minlength : 8,
 							maxlength : 8,
@@ -262,7 +262,7 @@
 						label: 'Options',
 						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/gear.png',
 						input: {
-							type      : 'checkbox',
+							type : 'checkbox',
 							items: [
 								{
 									label: 'Chart',
@@ -294,20 +294,20 @@
 									value: 'none'
 								},
 								{
-									label: 'Every',
-									value: 'every'
-								},
-								{
-									label: 'Daily',
-									value: 'daily'
+									label: 'Monthly',
+									value: 'monthly'
 								},
 								{
 									label: 'Weekly',
 									value: 'weekly'
 								},
 								{
-									label: 'Monthly',
-									value: 'monthly'
+									label: 'Daily',
+									value: 'daily'
+								},
+								{
+									label: 'Every',
+									value: 'every'
 								}
 							]
 						}
@@ -317,7 +317,16 @@
 						label: 'Comment',
 						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/balloon.png',
 						input: {
-							type: 'textarea'
+							type  : 'textarea',
+							width : 330,
+							height: 70,
+							value : [
+								'# Now you can access Hyperform-object for test',
+								'(examples)',
+								'window.formExampleBasic.result()',
+								'window.formExampleBasic.validate()',
+								'window.formExampleBasic.submit()'
+							].join('\n')
 						}
 					}
 				]
