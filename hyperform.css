@@ -128,6 +128,8 @@
 		
 			table.hyperform > tbody > tr > th > label.hyperform-icon {
 				padding-left       : 20px;
+				padding-top        : 2px;
+				padding-bottom     : 2px;
 				background-repeat  : no-repeat;
 				background-position: left center; }
 			

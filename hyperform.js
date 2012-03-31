@@ -933,53 +933,67 @@ var Hyperform = Class.create({
 			return false;
 		}
 		
-		(
-			function _checkDependency() {
-				var isActivation = true;
+		var checker = function _checkDependency() {
+			var isActivation = true;
+			
+			for (var i = 0; i < depends.length; i++) {
+				var value = this.getValue(entities[i]);
 				
-				for (var i = 0; i < depends.length; i++) {
-					var value = this.getValue(entities[i]);
-					
-					if (typeof depends[i].operator === 'undefined') {
-						if (typeof depends[i].value === 'undefined') {
-							if (value === null) {
-								isActivation = false;
-							}
-						} else {
-							if (value !== depends[i].value) {
-								isActivation = false;
-							}
+				if (typeof depends[i].operator === 'undefined') {
+					if (typeof depends[i].value === 'undefined') {
+						if (value === null) {
+							isActivation = false;
 						}
 					} else {
-						if (eval(Object.inspect(value) + depends[i].operator + Object.inspect(depends[i].value))) {
-							
-						} else {
+						if (value !== depends[i].value) {
 							isActivation = false;
 						}
 					}
-				}
-				
-				var isChanged = false;
-				
-				if (isActivation) {
-					if (field._tr.visible() === false) {
-						isChanged = true;
-						field._tr.show();
-					}
 				} else {
-					if (field._tr.visible() === true) {
-						isChanged = true;
-						field._tr.hide();
+					if (eval(Object.inspect(value) + depends[i].operator + Object.inspect(depends[i].value))) {
+						
+					} else {
+						isActivation = false;
 					}
 				}
-				
-				if (isChanged) {
-					this.applyStyle();
+			}
+			
+			var isChanged = false;
+			
+			if (isActivation) {
+				if (field._tr.visible() === false) {
+					isChanged = true;
+					field._tr.show();
 				}
-				
-				setTimeout(arguments.callee.bind(this), 10);
-			}.bind(this)
-		)();
+			} else {
+				if (field._tr.visible() === true) {
+					isChanged = true;
+					field._tr.hide();
+				}
+			}
+			
+			if (isChanged) {
+				this.applyStyle();
+			}
+		}.bind(this);
+		
+		var ticket = 100;
+		setInterval(function () {
+			if (ticket < 0) {
+				return;
+			}
+			
+			checker();
+			--ticket;
+		}, 10);
+		checker();
+		
+		var reloadTicket = function _reloadTicket() {
+			ticket = 100;
+		};
+		
+		this._table.observe('click', reloadTicket);
+		this._table.observe('mousemove', reloadTicket);
 		
 		return true;
 	}//<--reliance
