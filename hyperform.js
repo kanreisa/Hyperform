@@ -704,11 +704,23 @@ var Hyperform = Class.create({
 				
 				// if validator
 				if ((value !== '') && (typeof field._d.validator !== 'undefined')) {
-					if (value.replace(/\n/g, '').match(this.validator[field._d.validator].regex) === null) {
-						field._valid = false;
-						field._warn.insert(new Element('li').insert(this.validator[field._d.validator].warning));
+					if (Object.isString(field._d.validator) === true) {
+						if (value.replace(/\n/g, '').match(this.validator[field._d.validator].regex) === null) {
+							field._valid = false;
+							field._warn.insert(new Element('li').insert(this.validator[field._d.validator].warning));
+						}
 					}
-				}
+					
+					if (Object.isFuction(field._d.validator) === true) {
+						var result = field._d.validator(value);
+						if (result !== true) {
+							field._valid = false;
+							if (Object.isString(result) === true) {
+								field._warn.insert();
+							}
+						}
+					}
+				}//<--if
 				
 				// if fc
 				if (typeof field._fc !== 'undefined') {
