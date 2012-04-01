@@ -543,8 +543,7 @@ var Hyperform = Class.create({
 						a._sliderPosition = i * unitWidth;
 					});
 					
-					// observe mousedown
-					handle.observe('mousedown', function(e) {
+					var onDragStart = function _onDragStart(e) {
 						isDragging   = true;
 						lastPosition = e.pointerX();
 						
@@ -564,6 +563,7 @@ var Hyperform = Class.create({
 								updateSlider();
 							}
 							
+							e.stop();
 							return false;
 						};
 						
@@ -571,7 +571,9 @@ var Hyperform = Class.create({
 							isDragging = false;
 							
 							$(document.body).stopObserving('mousemove', onMove);
+							$(document.body).stopObserving('touchmove', onMove);
 							$(document.body).stopObserving('mouseup', onUp);
+							$(document.body).stopObserving('touchend', onUp);
 							
 							updateSlider(true);
 							
@@ -579,10 +581,16 @@ var Hyperform = Class.create({
 						};
 						
 						$(document.body).observe('mousemove', onMove);
+						$(document.body).observe('touchmove', onMove);
 						$(document.body).observe('mouseup', onUp);
+						$(document.body).observe('touchend', onUp);
 						
 						return false;
-					});
+					};
+					
+					// observe mousedown
+					handle.observe('mousedown', onDragStart);
+					handle.observe('touchstart', onDragStart);
 				}//<--if
 			}//<--if
 			
