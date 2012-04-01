@@ -591,7 +591,87 @@ var Hyperform = Class.create({
 					// observe mousedown
 					handle.observe('mousedown', onDragStart);
 					handle.observe('touchstart', onDragStart);
-				}//<--if
+				}//<--if slider
+				
+				// if tag
+				if (field.input.type === 'tag') {
+					// create object (array)
+					field._o = field.input.values || [];
+					
+					// create *interface* container
+					field._i = new Element('div', {className: 'tag'})
+					
+					// create tag input
+					var input = new Element('input');
+					field._i.insert(input);
+					
+					if (typeof field.input.maxlength !== 'undefined') {
+						input.writeAttribute('maxlength', field.input.maxlength);
+					}
+					
+					if (typeof field.input.placeholder !== 'undefined') {
+						input.writeAttribute('placeholder', field.input.placeholder);
+					}
+					
+					if (typeof field.input.width !== 'undefined') {
+						input.setStyle({width: field.input.width + 'px'});
+					} else {
+						input.setStyle({width: '100px'});
+					}
+					
+					// create tag add button
+					var addButton = new Element('button').insert('&#x25B8;');
+					field._i.insert(addButton);
+					
+					// create tag list container
+					var tagListContainer = new Element('div');
+					field._i.insert(tagListContainer);
+					
+					var makeTagList = function _makeTagList() {
+						tagListContainer.update();
+						
+						if (field._o.length === 0) {
+							tagListContainer.hide();
+							return;
+						} else {
+							tagListContainer.show();
+						}
+						field._o.each(function(tag) {
+							var label = new Element('span').insert(tag);
+							
+							var delButton = new Element('button').insert('&times;');
+							delButton.observe('click', function() {
+								field._o = field._o.without(tag);
+								
+								makeTagList();
+							});
+							
+							label.insert(delButton);
+							tagListContainer.insert(label);
+						});
+					};
+					makeTagList();
+					
+					var addTag = function _addTag() {
+						if ($F(input).strip() === '') {
+							return;
+						}
+						
+						var value = $F(input).strip();
+						field._o = field._o.without(value);
+						field._o.push(value);
+						
+						input.value = '';
+						makeTagList();
+					};
+					
+					input.observe('keydown', function _onKeydown(e) {
+						if (e.keyCode === 13) {
+							addTag();
+						}
+					});
+					addButton.observe('click', addTag);
+				}//<--if tag
 			}//<--if
 			
 			// insert
@@ -693,7 +773,7 @@ var Hyperform = Class.create({
 			}
 			
 			if (typeof field._f !== 'undefined') {
-				var value = $F(field._f);
+				var value = $F(field._f).strip();
 				
 				// if require
 				if ((field._d.isRequired === true) && (value === '')) {
@@ -880,9 +960,9 @@ var Hyperform = Class.create({
 		var isElement = ((typeof field._f !== 'undefined') && (Object.isElement(field._f) === true));
 		if (isElement) {
 			if (toNumber) {
-				return parseInt($F(field._f), 10);
+				return parseInt($F(field._f).strip(), 10);
 			} else {
-				return $F(field._f);
+				return $F(field._f).strip();
 			}
 		}
 		
