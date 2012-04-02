@@ -157,7 +157,12 @@
 			table.hyperform > tbody > tr > td > div.text {
 				font-size : 12px;
 				margin    : 2px 0 0 0;
-				color     : #555; }
+				color     : #555;
+				-webkit-user-select: text;
+				-moz-user-select: text;
+				-ms-user-select: text;
+				-o-user-select: text;
+				user-select: text; }
 				
 			table.hyperform > tbody > tr > td > div.text:first-child {
 				margin-top: 0; }
