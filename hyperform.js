@@ -924,6 +924,11 @@ var Hyperform = Class.create({
 			}
 		}
 		
+		var isNumber = ((typeof field._o !== 'undefined') && (Object.isNumber(field._o) === true));
+		if (isNumber) {
+			return field._o;
+		}
+		
 		var isString = ((typeof field._o !== 'undefined') && (Object.isString(field._o) === true));
 		if (isString) {
 			if (toNumber) {

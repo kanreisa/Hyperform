@@ -313,6 +313,50 @@
 						}
 					},
 					{
+						key  : 'cpu',
+						label: 'CPU',
+						input: {
+							type : 'slider',
+							items: [
+								{
+									label: '1vCore',
+									value: 1
+								},
+								{
+									label: '2vCores',
+									value: 2
+								},
+								{
+									label: '3vCores',
+									value: 3
+								}
+							]
+						}
+					},
+					{
+						key  : 'planID',
+						label: 'Memory - Plan',
+						input: {
+							type : 'slider',
+							items: [
+								{
+									label: '2GB - plan1',
+									value: 1
+								},
+								{
+									label: '3GB - plan2',
+									value: 2
+								}
+							]
+						},
+						depends: [
+							{
+								key  : 'cpu',
+								value: 1
+							}
+						]
+					},
+					{
 						key  : 'comment',
 						label: 'Comment',
 						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/balloon.png',
