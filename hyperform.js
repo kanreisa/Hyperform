@@ -764,6 +764,10 @@ var Hyperform = Class.create({
 				return;//continue
 			}
 			
+			if ((typeof field.input === 'undefined') || (field.key === null)) {
+				return;//continue
+			}
+			
 			field._valid = true;
 			field._warn.update();
 			
@@ -835,7 +839,7 @@ var Hyperform = Class.create({
 		var isValid = true;
 		
 		this.fields.each(function(field) {
-			if (typeof field._f == 'undefined') return;
+			if (typeof field._valid == 'undefined') return;
 			
 			if (field._valid === false) {
 				isValid = false;

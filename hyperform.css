@@ -356,6 +356,7 @@
 					
 					table.hyperform > tbody > tr > td > div.pulldown > div.pulldown-list > div {
 						padding: 2px 25px 1px 10px;
+						white-space: nowrap;
 						cursor : pointer;
 						color: #555; }
 					
