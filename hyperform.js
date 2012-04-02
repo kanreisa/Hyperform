@@ -803,7 +803,7 @@ var Hyperform = Class.create({
 						}
 					}
 					
-					if (Object.isFuction(field._d.validator) === true) {
+					if (Object.isFunction(field._d.validator) === true) {
 						var result = field._d.validator(value);
 						if (result !== true) {
 							field._valid = false;
