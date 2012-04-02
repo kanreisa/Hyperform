@@ -748,6 +748,10 @@ var Hyperform = Class.create({
 		
 		this.applyStyle();
 		
+		if (this.onRendered !== null) {
+			this.onRendered(this);
+		}
+		
 		return this;
 	}//<--render
 	,
@@ -870,7 +874,7 @@ var Hyperform = Class.create({
 		}
 		
 		if (this.onSubmit !== null) {
-			this.onSubmit(this.result());
+			this.onSubmit(this.result(), this);
 		}
 		
 		return this;
