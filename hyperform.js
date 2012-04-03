@@ -812,7 +812,7 @@ var Hyperform = Class.create({
 						if (result !== true) {
 							field._valid = false;
 							if (Object.isString(result) === true) {
-								field._warn.insert();
+								field._warn.insert(new Element('li').insert(result));
 							}
 						}
 					}

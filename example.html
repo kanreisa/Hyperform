@@ -129,6 +129,15 @@
 						input: {
 							type      : 'text',
 							isRequired: true,
+							validator : function(value) {
+								var result = true;
+								
+								if (value === 'test') {
+									result = 'test';
+								}
+								
+								return result;
+							},
 							width     : 130,
 							maxlength : 128,
 							appendText: '@akkar.in'
