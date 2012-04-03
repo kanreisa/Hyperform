@@ -392,13 +392,22 @@ var Hyperform = Class.create({
 					var list = new Element('div', {className: 'pulldown-list'}).hide();
 					field._i.insert(list);
 					
-					button.observe('click', function _onClickBtnPulldown() {
+					button.observe('click', function _onClickBtnPulldown(e) {
 						button.toggleClassName('selecting');
 						list.toggle();
+						
+						e.stop();
+					});
+					
+					table.observe('click', function _onClickTablePulldown() {
+						if (list.visible() === true) {
+							button.removeClassName('selecting');
+							list.hide();
+						}
 					});
 					
 					field.input.items.unshift({
-						label: '<span style="color: #999;">&mdash;</span>',
+						label: '&mdash;',
 						value: null
 					});
 					
@@ -424,13 +433,15 @@ var Hyperform = Class.create({
 					
 					// each items
 					field.input.items.each(function _eachItemsInput(a, i) {
-						var b = new Element('div').insert(a.label).observe('click', function() {
+						var b = new Element('div').insert(a.label).observe('click', function(e) {
 							selectItem(i);
 							button.removeClassName('selecting');
 							list.hide();
 							
 							// validate
 							field.validate();
+							
+							e.stop();
 						});
 						list.insert(b);
 						
