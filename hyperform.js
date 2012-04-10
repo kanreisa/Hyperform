@@ -588,6 +588,7 @@ var Hyperform = Class.create({
 							
 							updateSlider(true);
 							
+							e.stop();
 							return false;
 						};
 						
@@ -596,12 +597,26 @@ var Hyperform = Class.create({
 						$(document.body).observe('mouseup', onUp);
 						$(document.body).observe('touchend', onUp);
 						
+						e.stop();
 						return false;
 					};
 					
-					// observe mousedown
+					var onClickBase = function(e) {
+						if (isDragging === false) {
+							lastPosition = e.pointerX();
+							fillWidth = e.offsetX;
+							updateSlider(true);
+						}
+						
+						e.stop();
+						return false;
+					};
+					
+					// event observe
 					handle.observe('mousedown', onDragStart);
 					handle.observe('touchstart', onDragStart);
+					base.observe('mousedown', onClickBase);
+					
 				}//<--if slider
 				
 				// if tag
