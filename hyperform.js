@@ -259,7 +259,7 @@ var Hyperform = Class.create({
 				}//<--if
 				
 				// radio
-				if (field.input.type === 'radio') {
+				if ((field.input.type === 'radio') || (field.input.type === 'radio-block')) {
 					// create value object
 					field._o = null;
 					
@@ -269,6 +269,10 @@ var Hyperform = Class.create({
 					
 					// create *interface* container
 					field._i = new Element('div', {className: 'radio'});
+					
+					if (field.input.type === 'radio-block') {
+						field._i.addClassName('radio-block');
+					}
 					
 					// each items
 					field.input.items.each(function _eachItemsInput(a) {
@@ -315,12 +319,16 @@ var Hyperform = Class.create({
 				}//<--if
 				
 				// checkbox
-				if (field.input.type === 'checkbox') {
+				if ((field.input.type === 'checkbox') || (field.input.type === 'checkbox-block')) {
 					// create object (array)
 					field._o = [];
 					
 					// create *interface* container
 					field._i = new Element('div', {className: 'checkbox'});
+					
+					if (field.input.type === 'checkbox-block') {
+						field._i.addClassName('checkbox-block');
+					}
 					
 					// each items
 					field.input.items.each(function _eachItemsInput(a) {
@@ -767,7 +775,7 @@ var Hyperform = Class.create({
 					colspan  : 2,
 					className: 'submit'
 				}).insert(
-					new Element('a').observe('click', function() { this.submit(); }.bind(this)).update(this.submitLabel)
+					new Element('button').observe('click', this.submit.bind(this)).insert(this.submitLabel)
 				)
 			);
 		}
