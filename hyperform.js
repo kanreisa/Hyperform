@@ -410,7 +410,12 @@ var Hyperform = Class.create({
 						}
 						
 						// positioning
-						var isOut = (table.getHeight() - (list.cumulativeOffset().top + list.getHeight()) <= 0);
+						var isOut = (
+							(
+								(table.cumulativeOffset().top + table.getHeight())
+								- (list.cumulativeOffset().top + list.getHeight())
+							) <= 0
+						);
 						if (isOut) {
 							if (list.hasClassName('pulldown-list-upper') === false) {
 								list.addClassName('pulldown-list-upper');
