@@ -401,10 +401,21 @@ var Hyperform = Class.create({
 					field._i.insert(list);
 					
 					button.observe('click', function _onClickBtnPulldown(e) {
+						e.stop();
 						button.toggleClassName('selecting');
 						list.toggle();
 						
-						e.stop();
+						if (list.visible() === false) {
+							return;
+						}
+						
+						// positioning
+						var isOut = (table.getHeight() - (list.cumulativeOffset().top + list.getHeight()) <= 0);
+						if (isOut) {
+							if (list.hasClassName('pulldown-list-upper') === false) {
+								list.addClassName('pulldown-list-upper');
+							}
+						}
 					});
 					
 					table.observe('click', function _onClickTablePulldown() {

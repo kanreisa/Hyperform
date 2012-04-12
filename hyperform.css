@@ -378,13 +378,15 @@
 			/*- pulldown -*/
 			
 			table.hyperform > tbody > tr > td > div.pulldown {
-				margin: 0; }
+				position: relative;
+				margin  : 0; }
 			
 				table.hyperform > tbody > tr > td > div.pulldown > div.pulldown-list {
 					position: absolute;
+					top     : 27px;
 					z-index : 5;
 					padding : 5px 0;
-					margin-top: 2px;
+					margin-top: 0;
 					border  : 1px solid #999;
 					box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 					width     : auto;
@@ -397,6 +399,10 @@
 					border-radius: 3px;
 					background-color: #fff;
 					background-color: rgba(255, 255, 255, 0.9); }
+			
+				table.hyperform > tbody > tr > td > div.pulldown > div.pulldown-list.pulldown-list-upper {
+					top   : auto;
+					bottom: 27px; }
 				
 				table.hyperform > tbody > tr > td > div.pulldown > button > label:after {
 					content       : "\25bc";
