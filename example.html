@@ -1,0 +1,356 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="X-UA-Compatible" content="chrome=1; IE=edge">
+	
+	<title>Hyperform - Example</title>
+	
+	<script type="text/javascript" src="prototype.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="hyperform.css">
+	<script type="text/javascript" src="hyperform.js"></script>
+	
+	<script type="text/javascript">
+		/* TEST SCRIPT */
+		
+		Event.observe(window, 'load', exampleBasic);
+		
+		//
+		// validator
+		//
+		var validator = {
+			alphanumeric: {
+				warning: 'Please enter only alphanumeric characters.',
+				regex  : /^[a-z0-9]+$/i
+			},
+			numbers: {
+				warning: 'Please enter numbers only.',
+				regex  : /^[0-9]+$/i
+			}
+		};
+		
+		//
+		// sample script
+		//
+		function exampleBasic() {
+			var form = window.formExampleBasic = new Hyperform({
+				//formWidth: '400px',
+				labelWidth: '130px',
+				labelAlign: 'right',
+				validator: validator,
+				onSubmit: function(data) {
+					console.log(data);
+				},
+				fields: [
+					{
+						key  : 'name',
+						label: 'Name',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/bin.png',
+						input: {
+							type       : 'text',
+							isRequired : true,
+							maxlength  : 64,
+							placeholder: 'Makoto'
+						}
+					},
+					{
+						key  : 'birth',
+						label: 'Birthday',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/cake.png',
+						input: {
+							type      : 'date',
+							isRequired: true
+						}
+					},
+					{
+						key  : 'gender',
+						label: 'Gender',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/toilet.png',
+						input: {
+							type      : 'radio',
+							isRequired: true,
+							items     : [
+								{
+									label: 'Male',
+									value: 'male',
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/gender.png'
+								},
+								{
+									label: 'Female',
+									value: 'female',
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/gender-female.png'
+								}
+							]
+						}
+					},
+					{
+						key  : 'job',
+						label: 'Job',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/tie.png',
+						input: {
+							type      : 'pulldown',
+							isRequired: true,
+							items: [
+								{
+									label: 'Artist',
+									value: 'artist'
+								},
+								{
+									label: 'Blogger',
+									value: 'blogger'
+								},
+								{
+									label: 'Politician',
+									value: 'politician'
+								},
+								{
+									label: 'President',
+									value: 'president',
+									isSelected: true,
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/bank.png'
+								}
+							]
+						}
+					},
+					{
+						key  : 'hobby',
+						label: 'Hobby',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/heart.png',
+						input: {
+							type      : 'tag'
+						}
+					},
+					{
+						key  : 'mail',
+						label: 'E-Mail',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/mail.png',
+						input: {
+							type      : 'text',
+							isRequired: true,
+							validator : function(value) {
+								var result = true;
+								
+								if (value === 'test') {
+									result = 'test';
+								}
+								
+								return result;
+							},
+							width     : 130,
+							maxlength : 128,
+							appendText: '@akkar.in'
+						}
+					},
+					{
+						key  : 'password',
+						label: 'Password',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/ui-text-field-password.png',
+						input: {
+							type      : 'password',
+							isRequired: true,
+							minlength : 6,
+							maxlength : 64
+						}
+					},
+					{
+						key  : 'plan',
+						label: 'Plan',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/leaf-plant.png',
+						input: {
+							type      : 'radio',
+							isRequired: true,
+							items: [
+								{
+									label: 'Free',
+									value: 'free',
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/present.png'
+								},
+								{
+									label: 'Lite ($5)',
+									value: 'lite',
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/money.png'
+								},
+								{
+									label: 'Standard ($10)',
+									value: 'standard',
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/moneys.png'
+								},
+								{
+									label: 'Pro ($2500)',
+									value: 'pro',
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/cigarette.png'
+								}
+							]
+						}
+					},
+					{
+						key  : 'paymentMethod',
+						label: 'Payment Method',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/moneys.png',
+						input: {
+							type: 'radio',
+							isRequired: true,
+							items: [
+								{
+									label: 'Credit Card',
+									value: 'credit',
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/credit-card.png',
+									isSelected: true
+								},
+								{
+									label: 'Paypal',
+									value: 'paypal',
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/piggy-bank.png'
+								},
+								{
+									label: 'Coupon',
+									value: 'coupon',
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/ticket.png'
+								}
+							]
+						},
+						depends: [
+							{
+								key     : 'plan',
+								operator: '!==',
+								value   : 'free'
+							},
+							{
+								key     : 'plan',
+								operator: '!==',
+								value   : null
+							}
+						]
+					},
+					{
+						key  : 'creditCard',
+						label: 'Card Number',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/credit-card.png',
+						input: {
+							type: 'text',
+							isRequired: true,
+							toNumber  : true,
+							validator : 'numbers',
+							minlength : 16,
+							maxlength : 16,
+							width     : 160
+						},
+						depends: [
+							{
+								key  : 'paymentMethod',
+								value: 'credit'
+							}
+						]
+					},
+					{
+						key  : 'couponCode',
+						label: 'Coupon Code',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/ticket.png',
+						text : '8 characters.',
+						input: {
+							type: 'text',
+							isRequired: true,
+							toNumber  : true,
+							validator : 'numbers',
+							minlength : 8,
+							maxlength : 8,
+							width     : 100,
+							prependText: '#'
+						},
+						depends: [
+							{
+								key  : 'paymentMethod',
+								value: 'coupon'
+							}
+						]
+					},
+					{
+						key  : 'options',
+						label: 'Options',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/gear.png',
+						input: {
+							type : 'checkbox',
+							items: [
+								{
+									label: 'Chart',
+									value: 'chart',
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/chart.png'
+								},
+								{
+									label: 'Tweet',
+									value: 'tweet',
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/balloon-twitter.png'
+								},
+								{
+									label: 'Miraclun',
+									value: 'miraclun',
+									icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/wand.png'
+								}
+							]
+						}
+					},
+					{
+						key  : 'notice',
+						label: 'E-Mail Notice',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/mails-stack.png',
+						input: {
+							type : 'slider',
+							items: [
+								{
+									label: 'Not receive',
+									value: 'none'
+								},
+								{
+									label: 'Monthly',
+									value: 'monthly'
+								},
+								{
+									label: 'Weekly',
+									value: 'weekly'
+								},
+								{
+									label: 'Daily',
+									value: 'daily'
+								},
+								{
+									label: 'Every',
+									value: 'every'
+								}
+							]
+						}
+					},
+					{
+						key  : 'comment',
+						label: 'Comment',
+						icon : 'http://cdn.pixely.jp/shared/icon/fugue-icons/icons-shadowless/balloon.png',
+						input: {
+							type  : 'textarea',
+							width : 330,
+							height: 70,
+							value : [
+								'# Now you can access Hyperform-object for test',
+								'(examples)',
+								'window.formExampleBasic.result()',
+								'window.formExampleBasic.validate()',
+								'window.formExampleBasic.submit()'
+							].join('\n')
+						}
+					}
+				]
+			});
+			
+			form.render('example-basic-container');
+		}
+	</script>
+	<style type="text/css">
+		body {
+			font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ",
+			             "Helvetica Neue", Helvetica, Arial, sans-serif, Osaka, "ＭＳ Ｐゴシック", "MS PGothic"; }
+	</style>
+</head>
+<body>
+	<div id="example-basic-container"></div>
+</body>
+</html>
