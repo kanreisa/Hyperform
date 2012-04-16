@@ -1,5 +1,5 @@
 /*!
- * Hyperform/1.0 for Prototype.js
+ * Hyperform/1.01 for Prototype.js
  *
  * Copyright (c) 2012 Yuki KAN
  * Licensed under the MIT-License.
@@ -417,8 +417,15 @@ var Hyperform = Class.create({
 							) <= 0
 						);
 						if (isOut) {
-							if (list.hasClassName('pulldown-list-upper') === false) {
-								list.addClassName('pulldown-list-upper');
+							var isOver = ((table.getHeight() - list.getHeight()) < 0);
+							if (isOver) {
+								if (list.hasClassName('pulldown-list-put') === false) {
+									list.addClassName('pulldown-list-put');
+								}
+							} else {
+								if (list.hasClassName('pulldown-list-upper') === false) {
+									list.addClassName('pulldown-list-upper');
+								}
 							}
 						}
 					});
