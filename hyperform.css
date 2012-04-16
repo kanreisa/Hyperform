@@ -53,7 +53,8 @@
 			line-height: 18px;
 			color      : #222;
 			color      : rgba(0, 0, 0, 0.8);
-			text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5); }
+			text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+			white-space: nowrap; }
 		
 		.hyperform button > label.hyperform-icon {
 			padding-left       : 25px;
@@ -403,6 +404,11 @@
 				table.hyperform > tbody > tr > td > div.pulldown > div.pulldown-list.pulldown-list-upper {
 					top   : auto;
 					bottom: 27px; }
+			
+				table.hyperform > tbody > tr > td > div.pulldown > div.pulldown-list.pulldown-list-put {
+					position     : relative;
+					top          : 2px;
+					margin-bottom: 5px; }
 				
 				table.hyperform > tbody > tr > td > div.pulldown > button > label:after {
 					content       : "\25bc";
@@ -666,6 +672,7 @@
 				background-image: linear-gradient(top, rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.15)); }
 			
 			table.hyperform > tbody > tr > td.submit > button:active {
+
 				border-color    : #000;
 				background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.20));
 				background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.20));
