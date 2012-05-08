@@ -111,10 +111,12 @@
 		background-color: #fff; }
 	
 		table.hyperform > tbody > tr > th, table.hyperform > tbody > tr > td {
-			/* border      : 1px solid #ccc; */
-			padding     : 6px 10px;
-			font-weight : normal;
-			font-size   : 12px; }
+			/* border          : 1px solid #ccc; */
+			background-color: transparent;
+			background-image: none;
+			padding         : 6px 10px;
+			font-weight     : normal;
+			font-size       : 12px; }
 		
 		table.hyperform > tbody > tr > th {
 			-webkit-user-select: none;
