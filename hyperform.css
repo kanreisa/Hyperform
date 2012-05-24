@@ -10,12 +10,7 @@
 	background      : #fff;
 	border-collapse : collapse;
 	table-layout    : fixed;
-	line-height     : 18px;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
-	user-select: none; }
+	line-height     : 18px; }
 	
 	/*- button -*/
 	
@@ -456,66 +451,47 @@
 				table.hyperform > tbody > tr > td > div.slider > div.slider-base {
 					position     : relative;
 					margin-top   : 5px;
-					height       : 6px;
+					height       : 4px;
 					border       : 1px solid #bbb;
 					border-color : rgba(0,0,0,0.4);
-					border-radius: 4px;
-					box-shadow   : inset 0 0 2px #aaa;
+					border-radius: 2px;
+					box-shadow   : inset 0 0 2px #bbb;
 					overflow     : visible;
-					background-color: #f5f5f5;
-					background-image: -webkit-linear-gradient(top, #e7e7e7 0%, #fff 100%);
-					background-image: -moz-linear-gradient(top, #e7e7e7 0%, #fff 100%);
-					background-image: -ms-linear-gradient(top, #e7e7e7 0%, #fff 100%);
-					background-image: -o-linear-gradient(top, #e7e7e7 0%, #fff 100%);
-					background-image: linear-gradient(top, #e7e7e7 0%, #fff 100%); }
+					background-color: #f5f5f5; }
 					
 					table.hyperform > tbody > tr > td > div.slider > div.slider-base >  div.slider-fill {
 						position     : relative;
-						height       : 6px;
-						border-radius: 4px;
+						height       : 4px;
+						border-radius: 2px;
 						border-top-right-radius: 0;
 						border-bottom-right-radius: 0;
 						box-shadow   : 0 0 4px #1e7aff, inset 0 0 3px rgba(255,255,255,0.5);
-						background-color: #1e7aff;
-						background-image: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 55%, rgba(255,255,255,0.0) 100%);
-						background-image: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 55%, rgba(255,255,255,0.0) 100%);
-						background-image: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 55%, rgba(255,255,255,0.0) 100%);
-						background-image: -o-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 55%, rgba(255,255,255,0.0) 100%);
-						background-image: linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 55%, rgba(255,255,255,0.0) 100%); }
+						background-color: #1e7aff; }
 						
 						table.hyperform > tbody > tr > td > div.slider > div.slider-base >  div.slider-fill > div.slider-handle {
 							position     : absolute;
 							z-index      : 2;
-							top          : -5px;
+							top          : -6px;
 							right        : -8px;
-							width        : 12px;
-							height       : 12px;
+							width        : 8px;
+							height       : 8px;
 							cursor       : default;
-							border       : 2px solid #aaa;
-							border-color : rgba(0,0,0,0.3);
+							border       : 4px solid #fff;
 							border-radius: 8px;
-							box-shadow   : inset 0 0 5px #ddd,
-							               0 0 4px rgba(0, 0, 0, 0.3);
-							background-color: #fff;
-							background-color: rgba(255, 255, 255, 0.4);
-							background-image: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-							background-image: -moz-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-							background-image: -ms-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-							background-image: -o-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-							background-image: linear-gradient(top, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%); }
+							box-shadow   : inset 0 0 3px #ccc,
+							               0 0 5px #777;
+							background-color: #ddd; }
 						
 						table.hyperform > tbody > tr > td > div.slider > div.slider-base >  div.slider-fill > div.slider-handle:hover {
-							box-shadow   : inset 0 0 3px #1e7aff,
-							               0 0 4px #1e7aff;
-							border-color : #777;
-							border-color : rgba(255,255,255,0.3); }
+							box-shadow   : 0 0 4px #1e7aff;
+							background-color: #bbb; }
 					
 					table.hyperform > tbody > tr > td > div.slider > div.slider-base >  div.slider-scale {
 						position     : absolute;
 						z-index      : 1;
 						top          : 0;
 						width        : 1px;
-						height       : 6px;
+						height       : 4px;
 						background-color: #ccc; }
 				
 				table.hyperform > tbody > tr > td > div.slider > div.slider-display {
