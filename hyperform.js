@@ -7,6 +7,7 @@
  * http://akkar.in/projects/hyperform/
 **/
 var Hyperform = Class.create({
+	
 	/** 
 	 *  new Hyperform(option) -> Hyperform
 	 *
@@ -32,8 +33,8 @@ var Hyperform = Class.create({
 		this.disableSubmitButton   = opt.disableSubmitButton   || false;
 		
 		return this;
-	}//<--initialize()
-	,
+	},//<--initialize()
+	
 	/**
 	 *  Hyperform#render(element) -> Hyperform
 	 *
@@ -924,10 +925,11 @@ var Hyperform = Class.create({
 		}
 		
 		return this;
-	}//<--render
-	,
+	},//<--render
+	
 	/**
-	 *  Hyperform#validate([key]) -> Boolean
+	 *  Hyperform#validate(key) -> Boolean
+	 *  - key (String) - optional
 	 *
 	 *  Validate the value of the specified item or all items of the form.
 	 *  Will return a boolean as a result.
@@ -1023,8 +1025,8 @@ var Hyperform = Class.create({
 		}.bind(this));
 		
 		return isValid;
-	}//<--validate
-	,
+	},//<--validate
+	
 	/**
 	 *  Hyperform#submit() -> Hyperform
 	 *
@@ -1049,8 +1051,8 @@ var Hyperform = Class.create({
 		}
 		
 		return this;
-	}//<--submit
-	,
+	},//<--submit
+	
 	/**
 	 *  Hyperform#result() -> Object
 	 *
@@ -1072,8 +1074,8 @@ var Hyperform = Class.create({
 		}.bind(this));
 		
 		return result;
-	}//<--result
-	,
+	},//<--result
+	
 	/**
 	 *  Hyperform#getField(key) -> Field object
 	 *  - key (String)
@@ -1098,10 +1100,11 @@ var Hyperform = Class.create({
 		}.bind(this));
 		
 		return result;
-	}//<--getField
-	,
+	},//<--getField
+	
 	/**
-	 *  Hyperform#getValue(fieldObject) -> null, Number, String, Array, Date
+	 *  Hyperform#getValue(field) -> null | Number | String | Array | Date
+	 *  - field - (object)
 	 *
 	 *  Get the value of the item.
 	**/
@@ -1177,8 +1180,8 @@ var Hyperform = Class.create({
 		}
 		
 		return null;
-	}//<--getValue
-	,
+	},//<--getValue
+	
 	/**
 	 *  Hyperform#disable() -> Hyperform
 	**/
@@ -1194,8 +1197,8 @@ var Hyperform = Class.create({
 		this._table._submit.hide();
 		
 		return this;
-	}//<--disable
-	,
+	},//<--disable
+	
 	/**
 	 *  Hyperform#enable() -> Hyperform
 	**/
@@ -1211,10 +1214,10 @@ var Hyperform = Class.create({
 		this._table._submit.show();
 		
 		return this;
-	}//<--enable
-	,
+	},//<--enable
+	
 	/**
-	 *  Hyperform#reliance(fieldObject) -> Boolean
+	 *  Hyperform#reliance(field) -> Boolean
 	**/
 	reliance: function _reliance(field) {
 		if (typeof field.depends === 'undefined') {
@@ -1306,8 +1309,8 @@ var Hyperform = Class.create({
 		this._table.observe('mousemove', reloadTicket);
 		
 		return true;
-	}//<--reliance
-	,
+	},//<--reliance
+	
 	/**
 	 *  Hyperform#applyStyle() -> Hyperform
 	 *
