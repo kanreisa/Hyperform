@@ -1,5 +1,5 @@
 /*!
- * Hyperform/1.02 for Prototype.js
+ * Hyperform/1.1 for Prototype.js
  *
  * Copyright (c) 2012 Yuki KAN
  * Licensed under the MIT-License.
@@ -7,6 +7,7 @@
  * http://akkar.in/projects/hyperform/
 **/
 var Hyperform = Class.create({
+	
 	/** 
 	 *  new Hyperform(option) -> Hyperform
 	 *
@@ -32,8 +33,8 @@ var Hyperform = Class.create({
 		this.disableSubmitButton   = opt.disableSubmitButton   || false;
 		
 		return this;
-	}//<--initialize()
-	,
+	},//<--initialize()
+	
 	/**
 	 *  Hyperform#render(element) -> Hyperform
 	 *
@@ -221,6 +222,12 @@ var Hyperform = Class.create({
 							new Element('span', {className: 'prepend'}).insert(field.input.prependText)
 						});
 					}
+					
+					// field method
+					field.setValue = function _setValueInput(value) {
+						field._f.value = value;
+						return field;
+					}.bind(this);
 				}//<--if
 				
 				// textarea
@@ -256,6 +263,12 @@ var Hyperform = Class.create({
 					field._f.observe('change', function() {
 						field.validate();
 					});
+					
+					// field method
+					field.setValue = function _setValueTextarea(value) {
+						field._f.value = value;
+						return field;
+					}.bind(this);
 				}//<--if
 				
 				// radio
@@ -277,7 +290,7 @@ var Hyperform = Class.create({
 					// each items
 					field.input.items.each(function _eachItemsInput(a) {
 						// create radio button
-						var button = new Element('button');
+						var button = a._entity = new Element('button');
 						field._i.insert(button);
 						
 						var label = new Element('label').insert(a.label);
@@ -316,6 +329,24 @@ var Hyperform = Class.create({
 							button.setStyle(field.input.style);
 						}
 					});//<--#each
+					
+					// field method
+					field.selectItem = function _selectItemRadio(value) {
+						field.input.items.each(function _eachItemsInput(a) {
+							if (a.value !== value) {
+								return;// continue
+							}
+							
+							field._o = a.value;
+							
+							field._i.select('button').each(function _eachRadioBtns(b) {
+								b.removeClassName('selected');
+							});
+							a._entity.addClassName('selected');
+						});
+						
+						return field;
+					}.bind(this);
 				}//<--if
 				
 				// checkbox
@@ -333,7 +364,7 @@ var Hyperform = Class.create({
 					// each items
 					field.input.items.each(function _eachItemsInput(a) {
 						// create radio button
-						var button = new Element('button');
+						var button = a._entity = new Element('button');
 						
 						var label = new Element('label').insert(a.label);
 						
@@ -376,6 +407,41 @@ var Hyperform = Class.create({
 							button.setStyle(field.input.style);
 						}
 					});//<--#each
+					
+					// field methods
+					field.selectItem = function _selectItemChkbox(value) {
+						field.input.items.each(function _eachItemsInput(a) {
+							if (a.value !== value) {
+								return;// continue
+							}
+							
+							if (a._entity.hasClassName('selected') === true) {
+								return;
+							}
+							
+							field._o.push(a.value);
+							a._entity.addClassName('selected');
+						});
+						
+						return field;
+					}.bind(this);
+					
+					field.unselectItem = function _unselectItemChkbox(value) {
+						field.input.items.each(function _eachItemsInput(a) {
+							if (a.value !== value) {
+								return;// continue
+							}
+							
+							if (a._entity.hasClassName('selected') === false) {
+								return;
+							}
+							
+							field._o = field._o.without(a.value);
+							a._entity.removeClassName('selected');
+						});
+						
+						return field;
+					}.bind(this);
 				}//<--if
 				
 				// pulldown
@@ -491,6 +557,20 @@ var Hyperform = Class.create({
 							selectItem(i);
 						}
 					});
+					
+					// field method
+					field.selectItem = function _selectItemPulldown(value) {
+						field.input.items.each(function _eachItemsInput(a, i) {
+							if (a.value !== value) {
+								return;// continue
+							}
+							
+							selectItem(i);
+							field.validate();
+						});
+						
+						return field;
+					}.bind(this);
 				}//<--if
 				
 				// slider
@@ -543,6 +623,16 @@ var Hyperform = Class.create({
 						display.update(field.input.items.first().label);
 					}
 					
+					// each items
+					field.input.items.each(function _eachItemsInput(a, i) {
+						a._sliderPosition = i * unitWidth;
+						
+						if (a.isSelected === true) {
+							lastPosition = i * unitWidth - 1;
+							fillWidth    = i * unitWidth - 1;
+						}
+					});
+					
 					var updateSlider = function _updateSlider(isSnap) {
 						fill.setStyle({
 							width: fillWidth + 'px'
@@ -579,11 +669,6 @@ var Hyperform = Class.create({
 						});
 					};
 					updateSlider();
-					
-					// each items
-					field.input.items.each(function _eachItemsInput(a, i) {
-						a._sliderPosition = i * unitWidth;
-					});
 					
 					var onDragStart = function _onDragStart(e) {
 						isDragging   = true;
@@ -648,6 +733,20 @@ var Hyperform = Class.create({
 					handle.observe('touchstart', onDragStart);
 					base.observe('mousedown', onClickBase);
 					
+					// field method
+					field.selectItem = function _selectItemSlider(value) {
+						field.input.items.each(function _eachItemsInput(a, i) {
+							if (a.value !== value) {
+								return;// continue
+							}
+							
+							lastPosition = i * unitWidth - 1;
+							fillWidth    = i * unitWidth - 1;
+							updateSlider(true);
+						});
+						
+						return field;
+					}.bind(this);
 				}//<--if slider
 				
 				// if tag
@@ -677,14 +776,14 @@ var Hyperform = Class.create({
 					}
 					
 					// create tag add button
-					var addButton = new Element('button').insert('&#x25B8;');
+					var addButton = new Element('button').insert('&#x2b;');// (v1.0:&#x25B8;)
 					field._i.insert(addButton);
 					
 					// create tag list container
 					var tagListContainer = new Element('div');
 					field._i.insert(tagListContainer);
 					
-					var makeTagList = function _makeTagList() {
+					function makeTagList() {
 						tagListContainer.update();
 						
 						if (field._o.length === 0) {
@@ -709,12 +808,13 @@ var Hyperform = Class.create({
 					};
 					makeTagList();
 					
-					var addTag = function _addTag() {
-						if ($F(input).strip() === '') {
+					function addTag() {
+						var value = $F(input).strip();
+						
+						if (value === '') {
 							return;
 						}
 						
-						var value = $F(input).strip();
 						field._o = field._o.without(value);
 						field._o.push(value);
 						
@@ -725,9 +825,26 @@ var Hyperform = Class.create({
 					input.observe('keydown', function _onKeydown(e) {
 						if (e.keyCode === 13) {
 							addTag();
+							e.stop();
 						}
 					});
 					addButton.observe('click', addTag);
+					
+					// field methods
+					field.addValue = function _addValueTag(value) {
+						input.value = value;
+						addTag();
+						
+						return field;
+					}.bind(this);
+					
+					field.removeValue = function _removeValueTag(value) {
+						field._o = field._o.without(value);
+						
+						makeTagList();
+						
+						return field;
+					}.bind(this);
 				}//<--if tag
 			}//<--if
 			
@@ -810,10 +927,11 @@ var Hyperform = Class.create({
 		}
 		
 		return this;
-	}//<--render
-	,
+	},//<--render
+	
 	/**
-	 *  Hyperform#validate([key]) -> Boolean
+	 *  Hyperform#validate(key) -> Boolean
+	 *  - key (String) - optional
 	 *
 	 *  Validate the value of the specified item or all items of the form.
 	 *  Will return a boolean as a result.
@@ -909,8 +1027,8 @@ var Hyperform = Class.create({
 		}.bind(this));
 		
 		return isValid;
-	}//<--validate
-	,
+	},//<--validate
+	
 	/**
 	 *  Hyperform#submit() -> Hyperform
 	 *
@@ -935,8 +1053,8 @@ var Hyperform = Class.create({
 		}
 		
 		return this;
-	}//<--submit
-	,
+	},//<--submit
+	
 	/**
 	 *  Hyperform#result() -> Object
 	 *
@@ -958,10 +1076,37 @@ var Hyperform = Class.create({
 		}.bind(this));
 		
 		return result;
-	}//<--result
-	,
+	},//<--result
+	
 	/**
-	 *  Hyperform#getValue(fieldObject) -> null, Number, String, Array, Date
+	 *  Hyperform#getField(key) -> Field object
+	 *  - key (String)
+	**/
+	getField: function _getField(key) {
+		var result = null;
+		
+		this.fields.each(function(field) {
+			if ((typeof field.key === 'undefined') || (field.key === null)) {
+				return;//continue
+			}
+			
+			if (field._tr.visible() === false) {
+				return;//continue
+			}
+			
+			if (field.key !== key) {
+				return;
+			}
+			
+			result = field;
+		}.bind(this));
+		
+		return result;
+	},//<--getField
+	
+	/**
+	 *  Hyperform#getValue(field) -> null | Number | String | Array | Date
+	 *  - field - (object)
 	 *
 	 *  Get the value of the item.
 	**/
@@ -1037,8 +1182,8 @@ var Hyperform = Class.create({
 		}
 		
 		return null;
-	}//<--getValue
-	,
+	},//<--getValue
+	
 	/**
 	 *  Hyperform#disable() -> Hyperform
 	**/
@@ -1054,8 +1199,8 @@ var Hyperform = Class.create({
 		this._table._submit.hide();
 		
 		return this;
-	}//<--disable
-	,
+	},//<--disable
+	
 	/**
 	 *  Hyperform#enable() -> Hyperform
 	**/
@@ -1071,10 +1216,10 @@ var Hyperform = Class.create({
 		this._table._submit.show();
 		
 		return this;
-	}//<--enable
-	,
+	},//<--enable
+	
 	/**
-	 *  Hyperform#reliance(fieldObject) -> Boolean
+	 *  Hyperform#reliance(field) -> Boolean
 	**/
 	reliance: function _reliance(field) {
 		if (typeof field.depends === 'undefined') {
@@ -1166,8 +1311,8 @@ var Hyperform = Class.create({
 		this._table.observe('mousemove', reloadTicket);
 		
 		return true;
-	}//<--reliance
-	,
+	},//<--reliance
+	
 	/**
 	 *  Hyperform#applyStyle() -> Hyperform
 	 *
