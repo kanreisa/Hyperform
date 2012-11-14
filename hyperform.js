@@ -627,7 +627,7 @@ var Hyperform = Class.create({
 					field.input.items.each(function _eachItemsInput(a, i) {
 						a._sliderPosition = i * unitWidth;
 						
-						if (a.isSelected === true) {
+						if (a.isSelected === true && i !== 0) {
 							lastPosition = i * unitWidth - 1;
 							fillWidth    = i * unitWidth - 1;
 						}
