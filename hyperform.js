@@ -244,7 +244,7 @@ var Hyperform = Class.create({
 					}
 					
 					if (typeof field.input.value !== 'undefined') {
-						field._f.insert(field.input.value.escapeHTML());
+						field._f.insert(!!field.input.value ? field.input.value.escapeHTML() : '');
 					}
 					
 					if (typeof field.input.width !== 'undefined') {
@@ -293,7 +293,7 @@ var Hyperform = Class.create({
 						var button = a._entity = new Element('button');
 						field._i.insert(button);
 						
-						var label = new Element('label').insert(a.label.escapeHTML());
+						var label = new Element('label').insert(a.label);
 						button.insert(label);
 						
 						if (typeof a.icon !== 'undefined') {
@@ -381,7 +381,7 @@ var Hyperform = Class.create({
 						button.observe('click', function _onClickChkboxBtn() {
 							if (this.hasClassName('selected') === true) {
 								// remove
-								field._o = field._o.without(a.value.escapeHTML());
+								field._o = field._o.without(a.value);
 								this.removeClassName('selected');
 							} else {
 								// add
@@ -465,6 +465,10 @@ var Hyperform = Class.create({
 					
 					var list = new Element('div', {className: 'pulldown-list'}).hide();
 					field._i.insert(list);
+					
+					if (!!field.input.isForcePut) {
+						list.addClassName('pulldown-list-put');
+					}
 					
 					button.observe('click', function _onClickBtnPulldown(e) {
 						e.stop();
@@ -793,7 +797,9 @@ var Hyperform = Class.create({
 							tagListContainer.show();
 						}
 						field._o.each(function(tag) {
-							var label = new Element('span').insert(tag.escapeHTML());
+							tag = tag.escapeHTML();
+							
+							var label = new Element('span').insert(tag);
 							
 							var delButton = new Element('button').insert('&times;');
 							delButton.observe('click', function() {
@@ -875,7 +881,7 @@ var Hyperform = Class.create({
 			}
 			
 			if (typeof field.description !== 'undefined') {
-				td.insert(new Element('div', {className: 'text'}).insert(field.description));
+				td.insert(new Element('div', {className: 'text'}).insert(field.description.escapeHTML()));
 			}
 			
 			if (typeof field.html !== 'undefined') {
