@@ -756,7 +756,7 @@ var Hyperform = Class.create({
 				// if tag
 				if (field.input.type === 'tag') {
 					// create object (array)
-					field._o = field.input.values || [];
+					field._o = field.input.values.invoke('escapeHTML') || [];
 					
 					// create *interface* container
 					field._i = new Element('div', {className: 'tag'})
@@ -797,8 +797,6 @@ var Hyperform = Class.create({
 							tagListContainer.show();
 						}
 						field._o.each(function(tag) {
-							tag = tag.escapeHTML();
-							
 							var label = new Element('span').insert(tag);
 							
 							var delButton = new Element('button').insert('&times;');
