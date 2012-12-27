@@ -813,7 +813,7 @@ var Hyperform = Class.create({
 					makeTagList();
 					
 					function addTag() {
-						var value = $F(input).strip();
+						var value = $F(input).strip().escapeHTML();
 						
 						if (value === '') {
 							return;
