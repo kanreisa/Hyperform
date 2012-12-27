@@ -244,7 +244,7 @@ var Hyperform = Class.create({
 					}
 					
 					if (typeof field.input.value !== 'undefined') {
-						field._f.insert(field.input.value);
+						field._f.insert(field.input.value.escapeHTML());
 					}
 					
 					if (typeof field.input.width !== 'undefined') {
@@ -293,7 +293,7 @@ var Hyperform = Class.create({
 						var button = a._entity = new Element('button');
 						field._i.insert(button);
 						
-						var label = new Element('label').insert(a.label);
+						var label = new Element('label').insert(a.label.escapeHTML());
 						button.insert(label);
 						
 						if (typeof a.icon !== 'undefined') {
@@ -381,7 +381,7 @@ var Hyperform = Class.create({
 						button.observe('click', function _onClickChkboxBtn() {
 							if (this.hasClassName('selected') === true) {
 								// remove
-								field._o = field._o.without(a.value);
+								field._o = field._o.without(a.value.escapeHTML());
 								this.removeClassName('selected');
 							} else {
 								// add
@@ -793,7 +793,7 @@ var Hyperform = Class.create({
 							tagListContainer.show();
 						}
 						field._o.each(function(tag) {
-							var label = new Element('span').insert(tag);
+							var label = new Element('span').insert(tag.escapeHTML());
 							
 							var delButton = new Element('button').insert('&times;');
 							delButton.observe('click', function() {
@@ -871,11 +871,15 @@ var Hyperform = Class.create({
 			}
 			
 			if (typeof field.text !== 'undefined') {
-				td.insert(new Element('div', {className: 'text'}).insert(field.text));
+				td.insert(new Element('div', {className: 'text'}).insert(field.text.escapeHTML()));
 			}
 			
 			if (typeof field.description !== 'undefined') {
 				td.insert(new Element('div', {className: 'text'}).insert(field.description));
+			}
+			
+			if (typeof field.html !== 'undefined') {
+				td.insert(new Element('div').insert(field.html));
 			}
 			
 			if (typeof field.innerHTML !== 'undefined') {
