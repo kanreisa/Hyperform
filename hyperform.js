@@ -875,11 +875,11 @@ var Hyperform = Class.create({
 			}
 			
 			if (typeof field.text !== 'undefined') {
-				td.insert(new Element('div', {className: 'text'}).insert(field.text.escapeHTML()));
+				td.insert(new Element('div', {className: 'text'}).insert(('' + field.text).escapeHTML()));
 			}
 			
 			if (typeof field.description !== 'undefined') {
-				td.insert(new Element('div', {className: 'text'}).insert(field.description.escapeHTML()));
+				td.insert(new Element('div', {className: 'text'}).insert(('' + field.description).escapeHTML()));
 			}
 			
 			if (typeof field.html !== 'undefined') {
