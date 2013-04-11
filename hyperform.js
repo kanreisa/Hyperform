@@ -1,5 +1,5 @@
 /*!
- * Hyperform/1.2 for Prototype.js
+ * Hyperform/1.3 for Prototype.js
  *
  * Copyright (c) 2012 Yuki KAN
  * Licensed under the MIT-License.
@@ -642,7 +642,7 @@ var Hyperform = Class.create({
 							width: fillWidth + 'px'
 						});
 						
-						var isBefore = ((fillWidth % unitWidth) < (unitWidth / 2));
+						var isLeftSide = ((fillWidth % unitWidth) < (unitWidth / 2));
 						
 						field.input.items.each(function _eachItemsInput(a, i) {
 							var itemPos = i * unitWidth;
@@ -651,9 +651,9 @@ var Hyperform = Class.create({
 								return;//continue
 							}
 							
-							if (isBefore) {
-								var label = field.input.items[i - 1].label;
-								var value = field.input.items[i - 1].value;
+							if (isLeftSide) {
+								var label = field.input.items[Math.max(0, i - 1)].label;
+								var value = field.input.items[Math.max(0, i - 1)].value;
 								itemPos -= unitWidth;
 							} else {
 								var label = a.label;
@@ -744,8 +744,8 @@ var Hyperform = Class.create({
 								return;// continue
 							}
 							
-							lastPosition = i * unitWidth - 1;
-							fillWidth    = i * unitWidth - 1;
+							lastPosition = Math.max(0, i * unitWidth - 1);
+							fillWidth    = Math.max(i * unitWidth - 1);
 							updateSlider(true);
 						});
 						
@@ -756,7 +756,7 @@ var Hyperform = Class.create({
 				// if tag
 				if (field.input.type === 'tag') {
 					// create object (array)
-					field._o = field.input.values.invoke('escapeHTML') || [];
+					field._o = !!field.input.values ? field.input.values.invoke('escapeHTML') : [];
 					
 					// create *interface* container
 					field._i = new Element('div', {className: 'tag'})
