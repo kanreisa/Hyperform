@@ -723,8 +723,11 @@ var Hyperform = Class.create({
 					
 					var onClickBase = function(e) {
 						if (isDragging === false) {
-							lastPosition = e.pointerX();
-							fillWidth = e.offsetX;
+							var pointerX = e.pointerX();
+							var elmOffsetX = this.cumulativeOffset().left;
+
+							lastPosition = pointerX;
+							fillWidth = pointerX - elmOffsetX;
 							updateSlider(true);
 						}
 						
